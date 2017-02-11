@@ -70,27 +70,15 @@ class Vector(object):
         return atan2(self.y, self.x)
 
     def proj(self, other):
-        size_self = self.norm()
         size_other = other.norm()
 
-        if size_self == 0:
-            return (Vector(0, 0), Vector(0, 0))
-
         if size_other == 0:
-            return (self.copy(), Vector(0, 0))
+            return (Vector(0, 0), self.copy())
+        else:
+            vec_parallel = other.scale(self.inner(other) / (size_other * size_other))
+            vec_orthogonal = self - vec_parallel
 
-        c = self.inner(other) / (size_self * size_other)
-
-        if c > 1.0:
-            c = 1.0
-
-        if c < -1.0:
-            c = -1.0
-
-        vec_parallel = other.scale(size_self / size_other * c)
-        vec_orthogonal = Vector(-other.y, other.x).scale(size_self / size_other * sqrt(1 - c * c))
-
-        return (vec_parallel, vec_orthogonal)
+            return vec_parallel, vec_orthogonal
 
     def copy(self):
         return Vector(self.x, self.y)

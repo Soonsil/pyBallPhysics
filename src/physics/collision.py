@@ -57,3 +57,6 @@ class CirclePolygonCollision(object):
             line_start, line_end = v[i] + p, v[i + 1] + p
             if self.is_touching_line(line_start, line_end):
                 self.rebound(line_start, line_end, preserve)
+                return True
+
+        return False

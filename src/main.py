@@ -1,6 +1,6 @@
-from physics.vector import Vector
 from physics.collision import CirclePolygonCollision
 from physics.renderer import Renderer
+from physics.vector import Vector
 
 
 class MyRenderer(Renderer):
@@ -46,12 +46,14 @@ class MyRenderer(Renderer):
         map(self.draw_entity, self.rocks)
 
     def on_frame(self):
-        self.ball.body.add_force(Vector(0, 0.7))
+        self.ball.body.add_force(Vector(0, 0.5))
         self.ball.body.integrate_force()
 
         for rock in self.rocks:
-            self.collision.try_collide_polygon(rock.body, preserve=0.0)
+            if self.collision.try_collide_polygon(rock.body, preserve=0.3):
+                break
 
         self.draw_entity(self.ball)
+
 
 MyRenderer().run()
